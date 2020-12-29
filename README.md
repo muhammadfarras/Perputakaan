@@ -38,7 +38,41 @@ Belum ada
 ### Lunak / Digital
 ```
 1. Bahasa pemprograman Java
-2. Oracle JDK 8, sebenarnya berbayar, namun karena ini tidak untuk diperjual belikan, ya jadi saya anggap boleh lah :D, dan saya pilih JDK 8 karena masih termasuk didalamnya
-JafaFX.
+2. Oracle JDK 8, sebenarnya berbayar, namun karena ini tidak untuk diperjual belikan, ya jadi saya 
+anggap boleh lah :D, dan saya pilih JDK 8 karena masih termasuk didalamnyaJafaFX.
 3. U Are U SDK 4500, SDK dari digital persona. Jika membeli Finger Print ini sudah include didlamanya SDK tersebut.
 ```
+### Perangkat Keras
+```
+1. Finger Print digital Persona 4500
+```
+
+## Instalasi
+Banyak yang mengatakan Java itu mengungguli dari bahasa pemprograman yang lain karena :
+> Write Once, Run Any Where
+1. Yap karena itu kita membutuhkan **JRE** Java Runtime Environment terinstall diaplikasi kita.
+karena kode ini dikompile dengan `JDK 8` maka untuk menjalankan membutuhkan `JDK 8` (Sudah termasuk JRE didalamnya).
+1.1 [Optional] jika kalian _pull_ repository ini dan kalian mengganti menggunakan JDK != 8, maka kalian juga harus menjalankannya menggunakan JDK yang sama.
+
+2. Membuat Jar file, `yang perlu diperhtikan adalah eksternal library harus berada didalam bundle jar tersebut`.
+
+3. Buat _short cut_ dari file Jar yang didalamnya mengandung *main class*, lalu klik kanan, dan pada isian target isilah dengan
+```"C:\alamat anda sendiri\bin\javaw.exe" -jar C:\alamat anda sendiri\Perputakaan\out\artifacts\Perputakaan_jar\Perputakaan.jar```
+
+Contoh milik saya
+
+```"C:\Program Files (x86)\Java\jre1.8.0_271\bin\javaw.exe" -jar C:\Users\saya\IdeaProjects\Perputakaan\out\artifacts\Perputakaan_jar\Perputakaan.jar```
+
+# Penutup
+Latar belakang saya membuat aplikasi ini untuk bagian Perpustakaan disekolah tempat saya berkerja. 
+Karena sebelum saya meninggalkan sekolah ini, untuk mencari Maisyah yang lebih baik saya harus meninggalkan
+sesuatu yang menjadi pahala Jariyah bagi saya.
+
+Katanya :
+> Gajah tidak mati kecuali meninggalkan Gading.
+
+pengertian :
+` Gading adalah hal yang bermanfaat `.
+
+
+Semoga kebaikan atas kalian semua :D
