@@ -40,7 +40,7 @@ Fitur Pelaporan
 2. [ ] Data unduhan pengunjung perpustakaan.
 ```
 
-## Sumber daya lunak
+## Sumber daya
 ### Lunak / Digital
 ```
 1. Bahasa pemprograman Java
