@@ -8,16 +8,16 @@ Hmmm, Abu Faris Ma'ruf menghilangkan* **S** karena **S**ayang sudah diberikan ke
 ## Fitur dari aplikasi Perputakaan
 Fitur Umum
 ```
-1. Enrollment atau pendafataran calon anggota serta perubahan data anggota. 
-2. Kehadiran dari anggota perpustakaan saat mengunjungi perpustakaan.
-3. Membuat kelompok atau sub jenis buku sesuai dengan menggunakan **Sistem Desimal Deway***
-4. Merekam semua data yang menyangkut dengan peminjaman buku.
-5. Notifikasi via surat elektronik dan Whats App perihal kadarluasanya peminjaman buku.
+1 Enrollment atau pendafataran calon anggota serta perubahan data anggota. 
+2 Kehadiran dari anggota perpustakaan saat mengunjungi perpustakaan.
+3 Membuat kelompok atau sub jenis buku sesuai dengan menggunakan **Sistem Desimal Deway***
+4 Merekam semua data yang menyangkut dengan peminjaman buku.
+5 Notifikasi via surat elektronik dan Whats App perihal kadarluasanya peminjaman buku.
 ```
 Fitur Pelaporan
 ```
-1. Dasbor yang menggambarkan jumlah pengunjung harian, jumlah buku yang dipinjam, jumlah buku yang tersedia.
-2. Data unduhan pengunjung perpustakaan.
+1 Dasbor yang menggambarkan jumlah pengunjung harian, jumlah buku yang dipinjam, jumlah buku yang tersedia.
+2 Data unduhan pengunjung perpustakaan.
 ```
 
 > Namun fitur diatas belum sepenuhnya ada, karena masih kurangnya ilmu saya jadi agak lama dalam pengembangan aplikasi ini. 
@@ -27,11 +27,17 @@ Fitur yang sudah tersedia ada dibawah ini ..
 ## Fitur dari aplikasi Perputakaan yang sudah tersedia di versi ini
 Fitur Umum
 ```
-1. Enrollment atau pendafataran calon anggota serta perubahan data anggota. 
+1. [x] Enrollment atau pendafataran calon anggota serta perubahan data anggota. 
+2. [ ] Kehadiran dari anggota perpustakaan saat mengunjungi perpustakaan.
+3. [ ] Membuat kelompok atau sub jenis buku sesuai dengan menggunakan **Sistem Desimal Deway***
+4. [ ] Merekam semua data yang menyangkut dengan peminjaman buku.
+5. [ ] Notifikasi via surat elektronik dan Whats App perihal kadarluasanya peminjaman buku.
 ```
+
 Fitur Pelaporan
 ```
-Belum ada
+1. [ ] Dasbor yang menggambarkan jumlah pengunjung harian, jumlah buku yang dipinjam, jumlah buku yang tersedia.
+2. [ ] Data unduhan pengunjung perpustakaan.
 ```
 
 ## Sumber daya lunak
