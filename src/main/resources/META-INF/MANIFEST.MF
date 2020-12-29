@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Main-Class: org.example.NewApp
+Class-Path: dpuareu.jar javafx-controls-11.0.2.jar javafx-graphics-11.0.
+ 2.jar xercesImpl-2.6.2.jar javafx-base-11.0.2-win.jar jpos113.jar xmlPa
+ rserAPIs.jar javafx-base-11.0.2.jar dpjavapos.jar javafx-graphics-11.0.
+ 2-win.jar javafx-fxml-11.0.2-win.jar mysql-connector-java-8.0.22.jar pr
+ otobuf-java-3.11.4.jar javafx-controls-11.0.2-win.jar javafx-fxml-11.0.
+ 2.jar
+

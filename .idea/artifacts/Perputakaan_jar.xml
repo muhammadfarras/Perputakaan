@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact name="Perputakaan:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Perputakaan_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Perputakaan.jar">
+        <element id="module-output" name="Perputakaan" />
+      </element>
+      <element id="library" level="module" name="Maven: uareu.dpuare:uareu-fp-dpuareu:1.0.0" module-name="Perputakaan" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:11.0.2" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:11.0.2" />
+      <element id="library" level="module" name="Maven: uareu.xercesImpl:uareu-fp-xercesImpl:1.0.0" module-name="Perputakaan" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:11.0.2" />
+      <element id="library" level="module" name="Maven: uareu.jpos113:uareu-fp-jpos113:1.0.0" module-name="Perputakaan" />
+      <element id="library" level="module" name="Maven: uareu.xmlParserAPIs:uareu-fp-xmlParserAPIs:1.0.0" module-name="Perputakaan" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:11.0.2" />
+      <element id="library" level="module" name="Maven: uareu.javapos:uareu-fp-javapos:1.0.0" module-name="Perputakaan" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:11.0.2" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:11.0.2" />
+      <element id="library" level="project" name="mysql:mysql-connector-java:8.0.22" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:11.0.2" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:11.0.2" />
+    </root>
+  </artifact>
+</component>
