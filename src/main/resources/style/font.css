@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "Filson Pro Regular";
+        font-style: normal;
+        font-weight: 400;
+        src: url("../fonts/FilsonPro-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Filson Pro Light";
+        font-style: normal;
+        font-weight: 400;
+        src: url("../fonts/FilsonProLight.ttf");
+}
+
+@font-face {
+    font-family: "Filson Pro Medium";
+        font-style: normal;
+        font-weight: 600;
+        src: url("../fonts/FilsonPro-Medium.ttf");
+}
+
+.root{
+    -fx-font-family: "Filson Pro Medium";
+}

@@ -131,7 +131,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
 
     private void OpenAndReopenReader (Engine myEngine) throws UareUException {
-        myReader.Open(Reader.Priority.COOPERATIVE);
+        myReader.Open(Reader.Priority.EXCLUSIVE);
         System.out.println(myReader.GetStatus().status);
         isOpen = true;
         finalFmd = myEngine.CreateEnrollmentFmd(Fmd.Format.DP_REG_FEATURES,EnrollmenThread.this::GetFmd);

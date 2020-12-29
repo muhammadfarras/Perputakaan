@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.AbsenThread"
+            prefHeight="400.0" prefWidth="600.0">
+    <padding>
+        <Insets top="15" left="10" right="10" bottom="15"></Insets>
+    </padding>
+
+    <left>
+        <VBox spacing="5"
+        >
+            <Text fx:id="text" text="Pengunjung Terkahir">
+                <Font size="12">
+
+                </Font>
+            </Text>
+
+
+        </VBox>
+    </left>
+
+    <center>
+        <Text text="Center"></Text>
+    </center>
+
+    <right>
+        <Text text="Right"></Text>
+    </right>
+
+    <bottom>
+        <Text text="Bottom"></Text>
+    </bottom>
+
+</BorderPane>

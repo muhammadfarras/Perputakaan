@@ -27,6 +27,8 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+    public static Stage parentStage;
+
     private ReaderCollection readerCollection;
     public Reader reader;
     private BorderPane borderPane = new BorderPane();
@@ -73,6 +75,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException, UareUException {
+
+        parentStage = stage;
 
         GetReader myReader = new GetReader();
         namedStyle= new NamedStyle();
@@ -354,6 +358,20 @@ public class App extends Application {
                     }
 
                     System.out.println("Verifikasi");
+                    break;
+
+                case ACT_ABSEN:
+
+                    changeNodeBorderPane(addCapturedBox());
+
+                    Stage myStage = new Stage();
+                    try {
+                        new AbsenThread().start(myStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     break;
 
                 default:
