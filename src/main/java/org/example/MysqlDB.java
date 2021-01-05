@@ -1,7 +1,11 @@
 package org.example;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MysqlDB {
     private static final String URL = "jdbc:mysql://localhost/";
@@ -19,6 +23,22 @@ public class MysqlDB {
 
     private java.sql.Connection connection = null;
     private boolean isConnect = false;
+
+    public class Record {
+        String usertId;
+        byte[] fmdBinary;
+        String personName;
+        String phoneNumber;
+        String personEmail;
+
+        public Record (String usertId, byte[]fmd,String personName,String phoneNumber,String personEmail){
+            this.usertId = usertId;
+            this.fmdBinary = fmd;
+            this.personName = personName;
+            this.phoneNumber = phoneNumber;
+            this.personEmail = personEmail;
+        }
+    }
 
 
     public MysqlDB (){
@@ -58,6 +78,26 @@ public class MysqlDB {
             pst.setString(5,escapeStringForMySQL(email));
             pst.execute();
         }
+    }
+
+    public List<Record> getAllFPData () throws SQLException {
+
+        Open();
+
+        List<Record> records = new ArrayList<>();
+        String query = "SELECT * from "+TABLE_NAME;
+        Statement statement =connection.createStatement();
+        ResultSet resultSet =statement.executeQuery(query);
+
+        while (resultSet.next()){
+            if (resultSet.getBytes(FP_COLUMN) != null){
+                records.add(new Record(resultSet.getString(USER_COLUMN)
+                ,resultSet.getBytes(FP_COLUMN),resultSet.getString(P_NAME),
+                        resultSet.getString(P_NUMBER),resultSet.getString(P_EMAIL)));
+            }
+        }
+
+        return records;
     }
 
     private String escapeStringForMySQL(String s) {

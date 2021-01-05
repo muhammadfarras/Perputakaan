@@ -25,7 +25,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
     Reader.CaptureResult cr;
     Fmd finalFmd;
-    private static boolean isOpen = false;
+//    private static boolean isOpen = false;
 
     public EnrollmenThread ()  {
         try {
@@ -57,7 +57,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                 }
 //                System.out.println(cr.image.getData());
                 if (cr.quality == Reader.CaptureQuality.CANCELED){
-                    System.out.println(cr.quality);
+                    System.out.println(getClass().toString()+" : "+cr.quality);
                     break;
                 }
                 else if (null != cr.image && Reader.CaptureQuality.GOOD == cr.quality ){
@@ -76,7 +76,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                         imagePanel.showImage(App.IMAGE_VIEW_FINGER);
 
                         Fmd fmd =engine.CreateFmd(cr.image, Fmd.Format.DP_PRE_REG_FEATURES);
-                        System.out.println("The fmd "+ fmd);
+                        System.out.println(getClass().toString()+" : "+"The fmd "+ fmd);
 
 
                         // return prefmd
@@ -91,7 +91,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
                     }
                     catch (UareUException e){
-                        System.out.println("Error");
+                        System.out.println(getClass().toString()+" : "+"Error");
                     }
                 }
 
@@ -109,7 +109,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
         try {
             // check apakah sebelumnya udah di open atau belim
             Engine myEngine = UareUGlobal.GetEngine();
-            if (!isOpen) {
+            if (!App.isOpen) {
 //                Jika tidak dibuka maka buka
                 imagePanel.clearImage(App.IMAGE_VIEW_FINGER);
                 OpenAndReopenReader (myEngine);
@@ -132,8 +132,8 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
     private void OpenAndReopenReader (Engine myEngine) throws UareUException {
         myReader.Open(Reader.Priority.EXCLUSIVE);
-        System.out.println(myReader.GetStatus().status);
-        isOpen = true;
+        System.out.println(getClass().toString()+" : "+myReader.GetStatus().status);
+        App.isOpen = true;
         finalFmd = myEngine.CreateEnrollmentFmd(Fmd.Format.DP_REG_FEATURES,EnrollmenThread.this::GetFmd);
 
         if (null != finalFmd){
@@ -215,7 +215,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                                 vNIY.setText(null);
                                 vPhone.setText(null);
                                 myReader.Close();
-                                isOpen = false;
+                                App.isOpen = false;
                             }
                             else {
                                 new WarningPopUp().informationIsianWajib();

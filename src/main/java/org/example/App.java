@@ -1,7 +1,6 @@
 package org.example;
 
 import com.digitalpersona.uareu.Reader;
-import com.digitalpersona.uareu.ReaderCollection;
 import com.digitalpersona.uareu.UareUException;
 import javafx.application.Application;
 import javafx.event.Event;
@@ -20,7 +19,6 @@ import javafx.stage.Stage;
 import org.example.convertertext.CostumeConverterText;
 import org.example.warning.WarningPopUp;
 
-import java.io.IOException;
 
 /**
  * JavaFX App
@@ -28,13 +26,28 @@ import java.io.IOException;
 public class App extends Application {
 
     public static Stage parentStage;
-
-    private ReaderCollection readerCollection;
-    public Reader reader;
-    private BorderPane borderPane = new BorderPane();
+    private final BorderPane borderPane = new BorderPane();
     private NamedStyle namedStyle;
-    private static StackPane centerStackPane = new StackPane();
+    private static final StackPane centerStackPane = new StackPane();
 
+    public static boolean isOpen = false;
+
+
+    /*
+    OPEN: STATIC READER
+     */
+    public static Reader reader;
+
+    static {
+        try {
+            reader = new GetReader().reader;
+        } catch (UareUException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+    close: STATIC READER
+     */
 
     /*
     OPEN: Kumpulan public node untuk sharing information antar class
@@ -68,19 +81,20 @@ public class App extends Application {
 
     public static final String ACT_UNDUH_ABSEN = "unduh_absen";
 
+    public App() {
+    }
+
     /*
     CLOSE : Kumpulan private variabel untuk menentukan action dari setiap link
      */
 
 
     @Override
-    public void start(Stage stage) throws IOException, UareUException {
+    public void start(Stage stage) {
 
         parentStage = stage;
 
-        GetReader myReader = new GetReader();
         namedStyle= new NamedStyle();
-        reader = myReader.reader;
 
         BUTTON_ENROLLMENT = new Button("Daftarkan");
         BUTTON_ENROLLMENT.setDisable(true);
@@ -91,11 +105,6 @@ public class App extends Application {
         TEXT_FIELD_PHONE_NUMBER = new TextField();
         TEXT_FIELD_EMAIL = new TextField();
 
-
-        String idReader = null;
-        if (reader != null){
-            idReader = reader.GetDescription().id.toString();
-        }
 
 //        set borderpane
         // set to stackpane first
@@ -167,7 +176,7 @@ public class App extends Application {
         Text titleMenu = new Text("Menu Utama");
         titleMenu.setFont(Font.font("Arial", FontWeight.BOLD,14));
         vBox.getChildren().add(titleMenu);
-        Hyperlink menuUtama[] = new Hyperlink[]{
+        Hyperlink[] menuUtama = new Hyperlink[]{
                 new Hyperlink("Absen"),
                 new Hyperlink("Dash board rekap absen"),
                 new Hyperlink("Unduh rekap absen")
@@ -177,11 +186,11 @@ public class App extends Application {
         menuUtama[1].setId(ACT_DASHBOARD_ABSEN);
         menuUtama[2].setId(ACT_UNDUH_ABSEN);
 
-        for (int i = 0 ; i < menuUtama.length ; i ++){
+        for (Hyperlink hyperlink : menuUtama) {
 
-            menuUtama[i].addEventHandler(MouseEvent.MOUSE_CLICKED,new MyEventHandler());
-            VBox.setMargin(menuUtama[i], new Insets(5,0,2,10));
-            vBox.getChildren().add(menuUtama[i]);
+            hyperlink.addEventHandler(MouseEvent.MOUSE_CLICKED, new MyEventHandler());
+            VBox.setMargin(hyperlink, new Insets(5, 0, 2, 10));
+            vBox.getChildren().add(hyperlink);
         }
 
 
@@ -193,18 +202,18 @@ public class App extends Application {
         subTitle1.setFont(Font.font("Arial", FontWeight.SEMI_BOLD,13));
 
         vBox.getChildren().addAll(title,subTitle1);
-        Hyperlink options[] = new Hyperlink[]{
+        Hyperlink[] options = new Hyperlink[]{
                 new Hyperlink("Daftar Baru Peserta Perpus"),
                 new Hyperlink("Ubah Data Peserta Perpus")
         };
         options[0].setId(ACT_ENROLLMENT);
         options[1].setId(ACT_VERIFICATION);
 
-        for (int i = 0 ; i < options.length ; i ++){
+        for (Hyperlink option : options) {
 
-            options[i].addEventHandler(MouseEvent.MOUSE_CLICKED,new MyEventHandler());
-            VBox.setMargin(options[i], new Insets(5,0,2,10));
-            vBox.getChildren().add(options[i]);
+            option.addEventHandler(MouseEvent.MOUSE_CLICKED, new MyEventHandler());
+            VBox.setMargin(option, new Insets(5, 0, 2, 10));
+            vBox.getChildren().add(option);
         }
 
         Text subTitle2 = new Text("Siswa");
@@ -331,6 +340,25 @@ public class App extends Application {
         centerStackPane.getChildren().add(nodeCenter);
     }
 
+    private void closeReaderIfItsOpen () {
+        if (isOpen){
+            System.out.println(getClass().toString()+" : "+"Reader is open");
+
+            try {
+                reader.CancelCapture();
+                reader.Close();
+
+//                            change flag
+                isOpen = false;
+            } catch (UareUException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println(getClass().toString()+" : "+"Reader is closed");
+        }
+    }
+
     private class MyEventHandler implements EventHandler<Event> {
 
         @Override
@@ -340,33 +368,36 @@ public class App extends Application {
                 case ACT_VERIFICATION:
 
                     changeNodeBorderPane(addCapturedBox());
-                    System.out.println("Daftar kan absen");
+                    closeReaderIfItsOpen ();
+                    System.out.println(getClass().toString()+" : "+"Daftar kan absen");
 
                     break;
                 case ACT_ENROLLMENT:
                     changeNodeBorderPane(addVerificationBox());
-
+                    closeReaderIfItsOpen ();
 
                     EnrollmenThread enrollmenThread = new EnrollmenThread();
 
                     new Thread(enrollmenThread).start();
 
                     try {
+
                         enrollmenThread.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                    System.out.println("Verifikasi");
+                    System.out.println(getClass().toString()+" : "+"Verifikasi");
                     break;
 
                 case ACT_ABSEN:
 
                     changeNodeBorderPane(addCapturedBox());
+                    closeReaderIfItsOpen ();
 
                     Stage myStage = new Stage();
                     try {
-                        new AbsenThread().start(myStage);
+                        new Absen().start(myStage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
