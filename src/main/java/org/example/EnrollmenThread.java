@@ -32,7 +32,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
             this.myReader = new GetReader().reader;
         }
         catch (UareUException e){
-
+            e.printStackTrace();
         }
 
     }
@@ -42,6 +42,11 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
         while (prefmd == null){
             try {
+                // Jika di unplug
+                if (myReader == null ){
+                    break;
+                }
+
                 // check reader
                 if (myReader.GetStatus().status == Reader.ReaderStatus.BUSY){
 
@@ -57,7 +62,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                 }
 //                System.out.println(cr.image.getData());
                 if (cr.quality == Reader.CaptureQuality.CANCELED){
-                    System.out.println(getClass().toString()+" : "+cr.quality);
+//                    System.out.println(getClass().toString()+" : "+cr.quality);
                     break;
                 }
                 else if (null != cr.image && Reader.CaptureQuality.GOOD == cr.quality ){
@@ -76,7 +81,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                         imagePanel.showImage(App.IMAGE_VIEW_FINGER);
 
                         Fmd fmd =engine.CreateFmd(cr.image, Fmd.Format.DP_PRE_REG_FEATURES);
-                        System.out.println(getClass().toString()+" : "+"The fmd "+ fmd);
+//                        System.out.println(getClass().toString()+" : "+"The fmd "+ fmd);
 
 
                         // return prefmd
@@ -96,7 +101,9 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                 }
 
             } catch (UareUException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                break;
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -111,6 +118,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
             Engine myEngine = UareUGlobal.GetEngine();
             if (!App.isOpen) {
 //                Jika tidak dibuka maka buka
+                System.out.println("Run here lah");
                 imagePanel.clearImage(App.IMAGE_VIEW_FINGER);
                 OpenAndReopenReader (myEngine);
 
@@ -124,6 +132,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
                 OpenAndReopenReader (myEngine);
             }
         } catch (UareUException e ) {
+            e.printStackTrace();
             soundNotifGagal.turnOn();
             textGui.appendText("\n\nGAGAL MEMBUAT SIDIK JARI, HARAP DIULANGI");
         }
@@ -132,7 +141,7 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
 
     private void OpenAndReopenReader (Engine myEngine) throws UareUException {
         myReader.Open(Reader.Priority.EXCLUSIVE);
-        System.out.println(getClass().toString()+" : "+myReader.GetStatus().status);
+//        System.out.println(getClass().toString()+" : "+myReader.GetStatus().status);
         App.isOpen = true;
         finalFmd = myEngine.CreateEnrollmentFmd(Fmd.Format.DP_REG_FEATURES,EnrollmenThread.this::GetFmd);
 

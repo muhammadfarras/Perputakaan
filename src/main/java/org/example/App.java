@@ -1,6 +1,7 @@
 package org.example;
 
 import com.digitalpersona.uareu.Reader;
+import com.digitalpersona.uareu.ReaderCollection;
 import com.digitalpersona.uareu.UareUException;
 import javafx.application.Application;
 import javafx.event.Event;
@@ -30,6 +31,7 @@ public class App extends Application {
     private NamedStyle namedStyle;
     private static final StackPane centerStackPane = new StackPane();
 
+
     public static boolean isOpen = false;
 
 
@@ -37,6 +39,7 @@ public class App extends Application {
     OPEN: STATIC READER
      */
     public static Reader reader;
+    public static Boolean isReaderCreatedAtFirst;
 
     static {
         try {
@@ -47,6 +50,14 @@ public class App extends Application {
     }
     /*
     close: STATIC READER
+     */
+
+    /*
+    OPEN : Warning Thread
+     */
+    public static final WarningPopUp warningPopUp = new WarningPopUp();
+    /*
+    CLOSE : Warning Thread
      */
 
     /*
@@ -82,6 +93,14 @@ public class App extends Application {
     public static final String ACT_UNDUH_ABSEN = "unduh_absen";
 
     public App() {
+        if (reader != null){
+            isReaderCreatedAtFirst = true;
+            System.out.println("Reader is not null for 1tm app crated");
+        }
+        else {
+            isReaderCreatedAtFirst = false;
+        }
+
     }
 
     /*
@@ -341,21 +360,51 @@ public class App extends Application {
     }
 
     private void closeReaderIfItsOpen () {
-        if (isOpen){
-            System.out.println(getClass().toString()+" : "+"Reader is open");
+        System.out.println("1. Flag is "+isOpen);
+        System.out.println("2. Reader is "+isReaderRealyOpen(reader));
+        if (isOpen && isReaderRealyOpen(reader)){
 
             try {
                 reader.CancelCapture();
                 reader.Close();
 
-//                            change flag
+//                change flag
                 isOpen = false;
             } catch (UareUException e) {
                 e.printStackTrace();
             }
         }
-        else {
-            System.out.println(getClass().toString()+" : "+"Reader is closed");
+        if (isOpen != isReaderRealyOpen(reader)){
+            System.out.println("Run adddjustment");
+            isOpen = false;
+        }
+        System.out.println("after : Flag is "+isOpen);
+        System.out.println("after : Reader is "+isReaderRealyOpen(reader));
+
+    }
+
+    private boolean IsReaderPlugged () {
+        try {
+            if (new GetReader().IsReaderDetected()){
+//                CHECK FLAG IS READER OPENED BEFORE OR NOT AFTER UNPLUGGED
+//                FIRST YOU HAVE TO CREATE ONE MORE FLAG THAT STORE A VALUE IF THAT
+//                READER IS ALREADY OPEN OR NOT
+                return true;
+            }
+        }
+        catch (UareUException e){
+
+        }
+        return false;
+    }
+
+    public static boolean isReaderRealyOpen (Reader readerCheck) {
+        try {
+            readerCheck.GetStatus();
+            return true;
+        }
+        catch (UareUException e){
+            return false;
         }
     }
 
@@ -369,25 +418,35 @@ public class App extends Application {
 
                     changeNodeBorderPane(addCapturedBox());
                     closeReaderIfItsOpen ();
-                    System.out.println(getClass().toString()+" : "+"Daftar kan absen");
+//                    System.out.println(getClass().toString()+" : "+"Daftar kan absen");
 
                     break;
                 case ACT_ENROLLMENT:
-                    changeNodeBorderPane(addVerificationBox());
-                    closeReaderIfItsOpen ();
-
-                    EnrollmenThread enrollmenThread = new EnrollmenThread();
-
-                    new Thread(enrollmenThread).start();
-
-                    try {
-
-                        enrollmenThread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    System.out.println(IsReaderPlugged());
+                    if (IsReaderPlugged()){
+                        changeNodeBorderPane(addVerificationBox());
+                        closeReaderIfItsOpen ();
+                        EnrollmenThread enrollmenThread = new EnrollmenThread();
+                        new Thread(enrollmenThread).start();
+                    }
+                    else // Jika reader tidak terbaca
+                    {
+                        try {
+                            warningPopUp.warningReaderNotReadAble(reader);
+                        } catch (UareUException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    System.out.println(getClass().toString()+" : "+"Verifikasi");
+
+//                    try {
+//
+//                        enrollmenThread.join();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
+//                    System.out.println(getClass().toString()+" : "+"Verifikasi");
                     break;
 
                 case ACT_ABSEN:
@@ -396,17 +455,13 @@ public class App extends Application {
                     closeReaderIfItsOpen ();
 
                     Stage myStage = new Stage();
-                    try {
-                        new Absen().start(myStage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    new Absen().start(myStage);
 
 
                     break;
 
                 default:
-                    new WarningPopUp().informationCostume("Status","Masih dalam tahap pengembangan.");
+                    warningPopUp.informationCostume("Status","Masih dalam tahap pengembangan.");
                     break;
             }
         }

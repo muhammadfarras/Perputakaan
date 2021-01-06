@@ -1,10 +1,9 @@
 package org.example.warning;
 
+import com.digitalpersona.uareu.Reader;
+import com.digitalpersona.uareu.UareUException;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -14,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Optional;
 
 public class WarningPopUp {
 
@@ -22,6 +22,26 @@ public class WarningPopUp {
         alert.setTitle(messageHeader);
         alert.setContentText(messageContext);
         alert.show();
+    }
+
+    public void warningReaderNotReadAble (Reader reader) throws UareUException {
+        ButtonType buttonType = new ButtonType("Terpasang");
+        Alert alert = new Alert(Alert.AlertType.WARNING,"Reader tidak terbaca...\n\nMasukan reader sekarang lalu tekan oke"
+        ,buttonType);
+
+        alert.setTitle("Peringatan : Reader tidak terbaca");
+
+        Optional<ButtonType> optionalButtonType = alert.showAndWait();
+
+//        if (optionalButtonType.orElse(buttonType) == buttonType){
+//            if (reader != null ){
+//                System.out.println("Reader sebelumnya ada lalu tidak ada");
+//            }
+//            else
+//            {
+//                System.out.println("Reader tidak ada sejak awal");
+//            }
+//        }
     }
 
     public void informationPendaftaranBerhasil (){

@@ -12,17 +12,28 @@
       prefHeight="400.0" prefWidth="600.0">
 
 
-    <VBox fx:id="vboxLeft"
+    <VBox fx:id="vboxHead"
           spacing="5">
         <VBox.margin>
-            <Insets top="10" left="10" right="10" bottom="10"/>
+            <Insets bottom="10"/>
         </VBox.margin>
-        <Label text="Status finger print : ">
+        <Label fx:id="labelHead" text="Pengunjung Perpustakaan Terakhir : ">
             <font>
                 <Font size="24"/>
             </font>
         </Label>
         <Text fx:id="statusText" text="">
+            <Font size="12">
+
+            </Font>
+        </Text>
+
+        <Label fx:id="labelStatus" text="Status pendataan terakhir : ">
+            <font>
+                <Font size="20"/>
+            </font>
+        </Label>
+        <Text fx:id="statusTextPendataan" text="">
             <Font size="12">
 
             </Font>

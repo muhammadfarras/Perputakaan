@@ -3,18 +3,14 @@ package org.example;
 import com.digitalpersona.uareu.*;
 import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.controller.MyController;
+import org.example.warning.WarningPopUp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Formatter;
+
 
 public class Absen extends Application implements Reader.CaptureCallback {
 
@@ -22,6 +18,10 @@ public class Absen extends Application implements Reader.CaptureCallback {
     private Reader reader;
     private MyController myController;
     private Fmd myFmd;
+    private final WarningPopUp warningPopUp = new WarningPopUp();
+
+    private SoundNotif soundNotifSukses = new SoundNotif("sound/berhasil.mp3");
+    private SoundNotif soundNotifGagal = new SoundNotif("sound/gagal.mp3");
 
 
     private List<MysqlDB.Record> myListOfRecord = new ArrayList<>();
@@ -39,40 +39,57 @@ public class Absen extends Application implements Reader.CaptureCallback {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
 //        load fxml
         myController = new MyController(App.parentStage);
         myController.show();
 
-        // Get All Data
-        this.myListOfRecord = mysqlDB.getAllFPData();
-        //lets create array
-        for (MysqlDB.Record record : this.myListOfRecord){
-            System.out.println(record.personName);
-            Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary, Fmd.Format.DP_REG_FEATURES, Fmd.Format.DP_REG_FEATURES);
-            myListOfFmds.add(fmd);
+        try {
+            // Get All Data
+            this.myListOfRecord = mysqlDB.getAllFPData();
+            //lets create array
+            for (MysqlDB.Record record : this.myListOfRecord){
+                System.out.println(record.personName);
+                Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary, Fmd.Format.DP_REG_FEATURES, Fmd.Format.DP_REG_FEATURES);
+                myListOfFmds.add(fmd);
+            }
+            myFmdArray = new Fmd[myListOfFmds.size()];
+            myListOfFmds.toArray(myFmdArray);
+            System.out.println("Banyaknya data array: "+myFmdArray.length);
         }
-        myFmdArray = new Fmd[myListOfFmds.size()];
-        myListOfFmds.toArray(myFmdArray);
-        System.out.println("Banyaknya data array: "+myFmdArray.length);
-
-
-
-//        open reader if reader not open
-        if (!App.isOpen){
-            reader.Open(Reader.Priority.COOPERATIVE);
-            App.isOpen = true;
-            caputreAbsen();
+        catch (Exception e){
+            warningPopUp.informationCostume("Kesalahan","Tidak dapat terhubung ke internet");
+            // Close stage
+            this.myController.closeStageCauseException();
         }
-        else {
-            reader.CancelCapture();
-            reader.Close();
-            App.isOpen = false;
 
-            reader.Open(Reader.Priority.EXCLUSIVE);
-            caputreAbsen();
+
+
+        try {
+
+            if (null != reader){
+                //        open reader if reader not open
+                if (!App.isOpen){
+                    reader.Open(Reader.Priority.COOPERATIVE);
+                    App.isOpen = true;
+                }
+                else {
+                    reader.CancelCapture();
+                    reader.Close();
+                    App.isOpen = false;
+
+                    reader.Open(Reader.Priority.EXCLUSIVE);
+                }
+                caputreAbsen();
+            }
+
         }
+        catch (UareUException e){
+
+        }
+
+
 
 
     }
@@ -107,10 +124,13 @@ public class Absen extends Application implements Reader.CaptureCallback {
                 Engine.Candidate [] candidates = engine.Identify(myFmd,0,myFmdArray,targetFalseMatchRate,1);
 
                 if (candidates.length ==1){
-                    myController.updateStatusAfterTappedFingerPrint(myListOfRecord.get(candidates[0].fmd_index).personName);
+                    myController.updateLattestPersonAfterTappedFingerPrint(myListOfRecord.get(candidates[0].fmd_index).personName);
+                    myController.updateStatusAfterTappedFingerPrint("Selamat Datang "+myListOfRecord.get(candidates[0].fmd_index).personName);
+                    soundNotifSukses.turnOn();
                 }
                 else {
                     myController.updateStatusAfterTappedFingerPrint("Person not found");
+                    soundNotifGagal.turnOn();
                 }
 
 
@@ -122,7 +142,7 @@ public class Absen extends Application implements Reader.CaptureCallback {
             }
         }
         else {
-            myController.updateStatusAfterTappedFingerPrint("Belum ada data yang tersedia didalam databse");
+            myController.updateLattestPersonAfterTappedFingerPrint("Belum ada data yang tersedia didalam databse");
         }
 
     }

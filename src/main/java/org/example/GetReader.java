@@ -20,4 +20,13 @@ public class GetReader {
             reader = null;
         }
     }
+
+    public boolean IsReaderDetected () throws UareUException {
+
+        if (UareUGlobal.GetReaderCollection().size() == 0){
+            return false;
+        }
+        return true;
+
+    }
 }

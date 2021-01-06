@@ -1,6 +1,6 @@
 .header-box {
     -fx-background-color: #47b562;
-    -fx-padding: 12px;
+        -fx-padding: 12px;
 }
 
 .header-text {
@@ -43,3 +43,4 @@
 .margin-card {
 
 }
+

@@ -3,23 +3,33 @@ package org.example.controller;
 import com.digitalpersona.uareu.UareUException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.fxml.LoadException;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.App;
+import org.example.NamedStyle;
 
+import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class MyController  {
+    private final NamedStyle namedStyle =new NamedStyle ();
+
+    @FXML
+    private Label labelHead;
     @FXML
     private Text statusText;
+    @FXML
+    private VBox vboxHead;
+    @FXML
+    private Text statusTextPendataan;
 
     private Stage primaryStage;
 
@@ -36,6 +46,20 @@ public class MyController  {
             Scene scene = new Scene(root.load(),900,825);
             scene.getStylesheets().add(getClass().getClassLoader()
                     .getResource("style/font.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getClassLoader().getResource("style/decoration.css").toString());
+
+            /*
+            OPEN : SET CLASS EVERY NODE
+             */
+            this.vboxHead.getStyleClass().add(namedStyle.HEADER);
+            this.statusText.setFont(Font.font("Arial", FontWeight.BOLD,14));
+            this.statusText.getStyleClass().add(namedStyle.HEADER_TEXT);
+
+            this.labelHead.setUnderline(true);
+            this.labelHead.setFont(Font.font("Arial", FontWeight.BOLD,18));
+            /*
+            CLOSE : SET CLASS EVERY NODE
+             */
 
             primaryStage.initModality(Modality.WINDOW_MODAL);
             primaryStage.initOwner(parentStage);
@@ -73,7 +97,15 @@ public class MyController  {
         primaryStage.show();
     }
 
-    public void updateStatusAfterTappedFingerPrint(String text){
+    public void updateLattestPersonAfterTappedFingerPrint(String text){
         this.statusText.setText(text);
+    }
+
+    public void updateStatusAfterTappedFingerPrint(String text){
+        this.statusTextPendataan.setText(text);
+    }
+
+    public void closeStageCauseException (){
+        primaryStage.close();
     }
 }
