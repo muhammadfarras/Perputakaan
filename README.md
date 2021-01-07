@@ -2,8 +2,6 @@
 
 Perpu ~~S~~ takaan
 
-Hmmm, Abu Faris Ma'ruf menghilangkan* **S** karena **S**ayang sudah diberikan kepada istrinya.
-*Hanya _typo_ pada dasarnya...
 
 ## Fitur dari aplikasi Perputakaan
 Fitur Umum
@@ -20,7 +18,7 @@ Fitur Pelaporan
 2 Data unduhan pengunjung perpustakaan.
 ```
 
-> Namun fitur diatas belum sepenuhnya ada, karena masih kurangnya ilmu saya jadi agak lama dalam pengembangan aplikasi ini. 
+> Namun fitur diatas belum sepenuhnya ada. 
 Semoga Allah mudahkan pengembangan aplikasi ini. Aammiin.
 Fitur yang sudah tersedia ada dibawah ini ..
 
@@ -28,7 +26,7 @@ Fitur yang sudah tersedia ada dibawah ini ..
 Fitur Umum
 ```
 1. [x] Enrollment atau pendafataran calon anggota serta perubahan data anggota. 
-2. [ ] Kehadiran dari anggota perpustakaan saat mengunjungi perpustakaan.
+2. [x] Kehadiran dari anggota perpustakaan saat mengunjungi perpustakaan.
 3. [ ] Membuat kelompok atau sub jenis buku sesuai dengan menggunakan **Sistem Desimal Deway***
 4. [ ] Merekam semua data yang menyangkut dengan peminjaman buku.
 5. [ ] Notifikasi via surat elektronik dan Whats App perihal kadarluasanya peminjaman buku.
@@ -70,10 +68,6 @@ Contoh milik saya
 ```"C:\Program Files (x86)\Java\jre1.8.0_271\bin\javaw.exe" -jar C:\Users\saya\IdeaProjects\Perputakaan\out\artifacts\Perputakaan_jar\Perputakaan.jar```
 
 # Penutup
-Latar belakang saya membuat aplikasi ini untuk bagian Perpustakaan disekolah tempat saya berkerja. 
-Karena sebelum saya meninggalkan sekolah ini, untuk mencari Maisyah yang lebih baik saya harus meninggalkan
-sesuatu yang menjadi pahala Jariyah bagi saya.
-
 Katanya :
 > Gajah tidak mati kecuali meninggalkan Gading.
 

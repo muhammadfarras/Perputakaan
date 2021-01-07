@@ -40,7 +40,8 @@
     -fx-background-color: #FEFEFE;
 }
 
-.margin-card {
-
+.vbox-body-absen {
+    -fx-background-color: #E3FFF9;
+   -fx-padding: 12px;
 }
 

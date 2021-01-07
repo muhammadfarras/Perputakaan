@@ -363,7 +363,7 @@ public class App extends Application {
         System.out.println("1. Flag is "+isOpen);
         System.out.println("2. Reader is "+isReaderRealyOpen(reader));
         if (isOpen && isReaderRealyOpen(reader)){
-
+            System.out.println("Run Adjustment reader and flag");
             try {
                 reader.CancelCapture();
                 reader.Close();
@@ -375,7 +375,7 @@ public class App extends Application {
             }
         }
         if (isOpen != isReaderRealyOpen(reader)){
-            System.out.println("Run adddjustment");
+            System.out.println("Run only flag");
             isOpen = false;
         }
         System.out.println("after : Flag is "+isOpen);
@@ -400,8 +400,11 @@ public class App extends Application {
 
     public static boolean isReaderRealyOpen (Reader readerCheck) {
         try {
-            readerCheck.GetStatus();
-            return true;
+            if (readerCheck != null){
+                readerCheck.GetStatus();
+                return true;
+            }
+            return false;
         }
         catch (UareUException e){
             return false;
@@ -415,10 +418,8 @@ public class App extends Application {
             Hyperlink selectedHyperLink = ((Hyperlink)event.getSource());
             switch (selectedHyperLink.getId()){
                 case ACT_VERIFICATION:
-
                     changeNodeBorderPane(addCapturedBox());
                     closeReaderIfItsOpen ();
-//                    System.out.println(getClass().toString()+" : "+"Daftar kan absen");
 
                     break;
                 case ACT_ENROLLMENT:
@@ -451,12 +452,21 @@ public class App extends Application {
 
                 case ACT_ABSEN:
 
-                    changeNodeBorderPane(addCapturedBox());
-                    closeReaderIfItsOpen ();
+                    if (IsReaderPlugged()) {
+                        changeNodeBorderPane(addCapturedBox());
+                        closeReaderIfItsOpen();
 
-                    Stage myStage = new Stage();
-                    new Absen().start(myStage);
-
+                        Stage myStage = new Stage();
+                        new Absen().start(myStage);
+                    }
+                    else // Jika reader tidak terbaca
+                    {
+                        try {
+                            warningPopUp.warningReaderNotReadAble(reader);
+                        } catch (UareUException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     break;
 

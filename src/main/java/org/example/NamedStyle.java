@@ -6,6 +6,8 @@ public class NamedStyle {
     public final String HEADER_TEXT = "header-text";
     public final String LEFT_BORDER_PANE = "lb-pane";
 
+    public final String VBOX_BODY_ABSEN = "vbox-body-absen";
+
 //    border
     public final String RIGHT_BORDER = "right-border";
     public final String LEFT_BORDER = "left-border";

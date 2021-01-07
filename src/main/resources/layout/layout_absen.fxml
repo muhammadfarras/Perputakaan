@@ -7,9 +7,10 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns="http://javafx.com/javafx"
+<VBox fx:id="parentXml"
+        xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      prefHeight="400.0" prefWidth="600.0">
+      prefHeight="825.0" prefWidth="900.0">
 
 
     <VBox fx:id="vboxHead"
@@ -38,9 +39,20 @@
 
             </Font>
         </Text>
-
-
     </VBox>
+
+    <StackPane fx:id="stackPaneAbsen">
+        <children>
+            <ScrollPane fx:id="scrollPaneFilters">
+                <content>
+                    <VBox fx:id="vboxBody">
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </children>
+    </StackPane>
+
 
 
 </VBox>

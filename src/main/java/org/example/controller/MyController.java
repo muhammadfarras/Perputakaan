@@ -1,11 +1,13 @@
 package org.example.controller;
 
 import com.digitalpersona.uareu.UareUException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.LoadException;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,6 +32,13 @@ public class MyController  {
     private VBox vboxHead;
     @FXML
     private Text statusTextPendataan;
+    @FXML
+    private VBox vboxBody;
+    @FXML
+    private StackPane stackPaneAbsen;
+    @FXML
+    private VBox parentXml;
+
 
     private Stage primaryStage;
 
@@ -43,7 +52,7 @@ public class MyController  {
 
             root.setController(this);
 
-            Scene scene = new Scene(root.load(),900,825);
+            Scene scene = new Scene(root.load());
             scene.getStylesheets().add(getClass().getClassLoader()
                     .getResource("style/font.css").toExternalForm());
             scene.getStylesheets().add(getClass().getClassLoader().getResource("style/decoration.css").toString());
@@ -57,6 +66,15 @@ public class MyController  {
 
             this.labelHead.setUnderline(true);
             this.labelHead.setFont(Font.font("Arial", FontWeight.BOLD,18));
+
+            this.vboxBody.getStyleClass().add(namedStyle.VBOX_BODY_ABSEN);
+            System.out.println(vboxBody.getWidth());
+            vboxBody.setPrefWidth(parentXml.getPrefWidth());
+            vboxBody.setPrefHeight(1800);
+
+
+
+
             /*
             CLOSE : SET CLASS EVERY NODE
              */
@@ -70,7 +88,7 @@ public class MyController  {
                     event -> {
                         if (App.isOpen){
                             try {
-                                App.reader.CancelCapture();
+
                                 App.reader.Close();
                                 App.isOpen = false;
 
@@ -106,6 +124,12 @@ public class MyController  {
     }
 
     public void closeStageCauseException (){
-        primaryStage.close();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                primaryStage.close();
+            }
+        });
+
     }
 }

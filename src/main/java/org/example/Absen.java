@@ -15,7 +15,7 @@ import java.util.List;
 public class Absen extends Application implements Reader.CaptureCallback {
 
     private Stage parentStage;
-    private Reader reader;
+    private Reader myReader;
     private MyController myController;
     private Fmd myFmd;
     private final WarningPopUp warningPopUp = new WarningPopUp();
@@ -35,7 +35,7 @@ public class Absen extends Application implements Reader.CaptureCallback {
 
     public Absen(){
         this.parentStage = App.parentStage;
-        this.reader = App.reader;
+        this.myReader = App.reader;
     }
 
     @Override
@@ -50,13 +50,13 @@ public class Absen extends Application implements Reader.CaptureCallback {
             this.myListOfRecord = mysqlDB.getAllFPData();
             //lets create array
             for (MysqlDB.Record record : this.myListOfRecord){
-                System.out.println(record.personName);
+//                System.out.println(record.personName);
                 Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary, Fmd.Format.DP_REG_FEATURES, Fmd.Format.DP_REG_FEATURES);
                 myListOfFmds.add(fmd);
             }
             myFmdArray = new Fmd[myListOfFmds.size()];
             myListOfFmds.toArray(myFmdArray);
-            System.out.println("Banyaknya data array: "+myFmdArray.length);
+//            System.out.println("Banyaknya data array: "+myFmdArray.length);
         }
         catch (Exception e){
             warningPopUp.informationCostume("Kesalahan","Tidak dapat terhubung ke internet");
@@ -65,28 +65,44 @@ public class Absen extends Application implements Reader.CaptureCallback {
         }
 
 
-
         try {
-
-            if (null != reader){
+            if (null != myReader){
                 //        open reader if reader not open
+                System.out.println("Reader is close then open");
                 if (!App.isOpen){
-                    reader.Open(Reader.Priority.COOPERATIVE);
+                    myReader.Open(Reader.Priority.COOPERATIVE);
                     App.isOpen = true;
                 }
                 else {
-                    reader.CancelCapture();
-                    reader.Close();
+                    System.out.println("Reader opene then is close then open");
+                    myReader.CancelCapture();
+                    myReader.Close();
                     App.isOpen = false;
 
-                    reader.Open(Reader.Priority.EXCLUSIVE);
+                    myReader.Open(Reader.Priority.EXCLUSIVE);
+                    App.isOpen = true;
                 }
-                caputreAbsen();
             }
+            else
+            {
+                // isi jika null
+                try {
+                    System.out.println("Create reader");
+                    App.reader = new GetReader().reader;
+                    this.myReader = App.reader;
 
+                    myReader.Open(Reader.Priority.EXCLUSIVE);
+                    App.isOpen = true;
+                    System.out.println("Reader not null anymore "+ (null != myReader));
+                }
+                catch (UareUException e){
+                    warningPopUp.informationCostume("Kesalahan","Reader tidak terbaca, tutup jendela lalu masuk kembali");
+                }
+            }
+            caputreAbsen();
         }
         catch (UareUException e){
-
+//            e.printStackTrace();
         }
 
 
@@ -98,10 +114,16 @@ public class Absen extends Application implements Reader.CaptureCallback {
         launch();
     }
 
-    private void caputreAbsen () throws UareUException {
+    private void caputreAbsen () {
+        try {
+        if (myReader.GetStatus().status == Reader.ReaderStatus.READY){
 
-        if (reader.GetStatus().status == Reader.ReaderStatus.READY){
-            reader.CaptureAsync(Fid.Format.ANSI_381_2004, Reader.ImageProcessing.IMG_PROC_DEFAULT,500,-1,this);
+                myReader.CaptureAsync(Fid.Format.ANSI_381_2004, Reader.ImageProcessing.IMG_PROC_DEFAULT,500,-1,this);
+            }
+        }
+        catch (UareUException e){
+            System.out.println("Error then close the stage");
+//            e.printStackTrace();
         }
     }
 
@@ -113,17 +135,28 @@ public class Absen extends Application implements Reader.CaptureCallback {
 
         if (myFmdArray.length != 0){
             Engine engine = UareUGlobal.GetEngine();
+
+            //            System.out.println(engine.CreateFmd(captureResult.image, Fmd.Format.DP_VER_FEATURES));
             try {
-
-//            System.out.println(engine.CreateFmd(captureResult.image, Fmd.Format.DP_VER_FEATURES));
                 myFmd = engine.CreateFmd(captureResult.image, Fmd.Format.DP_VER_FEATURES);
-                //lets identify
-                //Sets target false match rate
-                int targetFalseMatchRate = Engine.PROBABILITY_ONE/1000000;
+            } catch (Exception e) {
+                System.out.println("Close stage");
+                myController.closeStageCauseException();
+            }
 
-                Engine.Candidate [] candidates = engine.Identify(myFmd,0,myFmdArray,targetFalseMatchRate,1);
+            //lets identify
+            //Sets target false match rate
+            int targetFalseMatchRate = Engine.PROBABILITY_ONE/1000000;
 
-                if (candidates.length ==1){
+            Engine.Candidate [] candidates = new Engine.Candidate[0];
+
+            try {
+                candidates = engine.Identify(myFmd,0,myFmdArray,targetFalseMatchRate,1);
+            } catch (UareUException e) {
+//                e.printStackTrace();
+            }
+
+            if (candidates.length ==1){
                     myController.updateLattestPersonAfterTappedFingerPrint(myListOfRecord.get(candidates[0].fmd_index).personName);
                     myController.updateStatusAfterTappedFingerPrint("Selamat Datang "+myListOfRecord.get(candidates[0].fmd_index).personName);
                     soundNotifSukses.turnOn();
@@ -132,14 +165,7 @@ public class Absen extends Application implements Reader.CaptureCallback {
                     myController.updateStatusAfterTappedFingerPrint("Person not found");
                     soundNotifGagal.turnOn();
                 }
-
-
-
-
                 caputreAbsen();
-            } catch (UareUException e) {
-                e.printStackTrace();
-            }
         }
         else {
             myController.updateLattestPersonAfterTappedFingerPrint("Belum ada data yang tersedia didalam databse");

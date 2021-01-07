@@ -118,18 +118,10 @@ public class EnrollmenThread extends Thread implements Engine.EnrollmentCallback
             Engine myEngine = UareUGlobal.GetEngine();
             if (!App.isOpen) {
 //                Jika tidak dibuka maka buka
-                System.out.println("Run here lah");
+                System.out.println("Run lah true");
                 imagePanel.clearImage(App.IMAGE_VIEW_FINGER);
                 OpenAndReopenReader (myEngine);
 
-            }
-            else {
-//                Jika kebuka maka harus di cancel capture
-//                dan di close
-                imagePanel.clearImage(App.IMAGE_VIEW_FINGER);
-                myReader.CancelCapture();
-                myReader.Close();
-                OpenAndReopenReader (myEngine);
             }
         } catch (UareUException e ) {
             e.printStackTrace();
